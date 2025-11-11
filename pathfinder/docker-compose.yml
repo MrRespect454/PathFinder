@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgis/postgis:15-3.3
+    container_name: pathfinder-postgres
+    environment:
+      POSTGRES_DB: pathfinder
+      POSTGRES_USER: pathfinder_user
+      POSTGRES_PASSWORD: pathfinder_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+      - ./db/init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pathfinder_user -d pathfinder"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: pathfinder-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./db/redis-data:/data
+    command: redis-server --appendonly yes
