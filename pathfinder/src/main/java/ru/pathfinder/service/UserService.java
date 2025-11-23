@@ -16,7 +16,7 @@ public class UserService {
     public User register(User user) {
        Optional<User> optionalUser = UserRepository.findByEmail(user.getEmail());
        if (optionalUser.isPresent()) {
-        throw new IllegalStateException("Пользователь с таким Email уже существует")
+        throw new IllegalStateException("Пользователь с таким Email уже существует");
        }
         return userRepository.save(user);
     }
