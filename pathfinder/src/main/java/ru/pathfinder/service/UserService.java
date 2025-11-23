@@ -1,5 +1,7 @@
 package ru.pathfinder.service;
 
+import java.util.Optional;
+
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,10 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User register(User user) {
-        //UserRepository.findByEmail
+       Optional<User> optionalUser = UserRepository.findByEmail(user.getEmail());
+       if (optionalUser.isPresent()) {
+        throw new IllegalStateException("Пользователь с таким Email уже существует")
+       }
         return userRepository.save(user);
     }
 
