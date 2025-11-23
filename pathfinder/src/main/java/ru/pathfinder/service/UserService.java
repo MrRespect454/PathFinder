@@ -12,6 +12,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User register(User user) {
+        //UserRepository.findByEmail
         return userRepository.save(user);
     }
 
@@ -23,7 +24,8 @@ public class UserService {
     return userRepository.findByUsername(email);
  }
 
- public boolean validatePassword(){// - проверка пароля
+ public boolean validatePassword()// - проверка пароля
+ {
     return passwordEncoder.matches(rawPassword, encodedPassword);
         
     }    
