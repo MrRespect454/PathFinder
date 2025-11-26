@@ -14,7 +14,6 @@ import ru.pathfinder.repository.InterestingtagRepository;
 public class InterestingtagService {
     private final InterestingtagRepository interestingtagRepository;
 
-
     public List<Interestingtag> searchWithinRadius(double lat, double lon, double radius) {
         return interestingtagRepository.findWithinRadius(lat, lon, radius);
     }
