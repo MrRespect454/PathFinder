@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import ru.pathfinder.domain.Interestingtag;
+import ru.pathfinder.domain.User;
 import ru.pathfinder.repository.InterestingtagRepository;
 
 @Service
