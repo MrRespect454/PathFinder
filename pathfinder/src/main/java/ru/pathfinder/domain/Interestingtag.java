@@ -27,7 +27,7 @@ public class Interestingtag {
     private String description;
     
     @Column(columnDefinition = "geometry(Point,4326)")
-    private Point location;
+    private Point coordinates; //location;
     
     private String address;
     

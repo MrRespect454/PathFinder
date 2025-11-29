@@ -30,11 +30,11 @@ public class WebController {
         return "register"; 
     }
     
-    @GetMapping("/login")
+  @GetMapping("/login")
     public String login()
      {
         log.info("Loading login page");
         return "login"; 
-    }
+    } 
     
 }
