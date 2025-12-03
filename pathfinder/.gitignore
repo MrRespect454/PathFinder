@@ -43,3 +43,7 @@ db/backups/*.sql
     
 # Docker
 .docker/
+
+shit.zip
+bootLogs.txt
+text.txt
