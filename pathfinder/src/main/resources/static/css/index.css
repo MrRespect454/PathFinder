@@ -1,0 +1,121 @@
+/* ===== ГЛАВНЫЙ ЗАГОЛОВОК ===== */
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin: 40px auto 20px;
+    max-width: 800px;
+    line-height: 1.2;
+    padding: 0 20px;
+}
+
+main > p {
+    text-align: center;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 40px;
+    opacity: 0.9;
+    line-height: 1.6;
+    padding: 0 20px;
+}
+
+/* ===== СЕТКА КАРТОЧЕК ===== */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 1000px;
+    margin: 0 auto 60px;
+    padding: 0 20px;
+}
+
+/* ===== КАРТОЧКИ ФИЧ ===== */
+.feature-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.featureicon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 30px;
+}
+
+.feature-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: #2d3748;
+}
+
+.feature-card p {
+    color: #718096;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    text-align: center;
+    max-width: none;
+    padding: 0;
+}
+
+.feature-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.feature-btn:hover {
+    transform: scale(1.03);
+}
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ ГЛАВНОЙ ===== */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    main > p {
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.6rem;
+    }
+    
+    .feature-card {
+        padding: 20px;
+    }
+    
+    .featureicon {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+    }
+}

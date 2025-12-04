@@ -1,0 +1,120 @@
+/* ===== КОНТЕЙНЕР РЕГИСТРАЦИИ ===== */
+.register-card {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    color: #333;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.register-card h2 {
+    text-align: center;
+    color: #2d3748;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+}
+
+/* ===== ФОРМЫ ===== */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #4a5568;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    background: white;
+    color: #2d3748;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+::placeholder {
+    color: #a0aec0;
+}
+
+/* ===== КНОПКИ ФОРМЫ ===== */
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* ===== ССЫЛКИ ===== */
+.text-center a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.text-center a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* ===== ALERT СООБЩЕНИЯ ===== */
+.alert {
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-top: 20px;
+    font-weight: 500;
+    display: none;
+}
+
+.alert-success {
+    background: #c6f6d5;
+    color: #22543d;
+    border: 1px solid #9ae6b4;
+}
+
+.alert-danger {
+    background: #fed7d7;
+    color: #742a2a;
+    border: 1px solid #fc8181;
+}
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ РЕГИСТРАЦИИ ===== */
+@media (max-width: 576px) {
+    .register-card {
+        margin: 20px;
+        padding: 20px;
+    }
+    
+    .register-card h2 {
+        font-size: 1.5rem;
+    }
+    
+    .btn-primary {
+        padding: 12px 24px;
+    }
+}

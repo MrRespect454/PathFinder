@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в аккаунт</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/login.css">    
+</head>
+<body>
+    <header>
+        <div class="logo"></div>
+        <nav>
+            <a href="/" class="navlink">Главная</a>
+            <a href="/map" class="navlink">Карта</a>
+            <a href="/routes" class="navlink">Маршруты</a>
+            <a href="/profile" class="navlink">Профиль</a>
+        </nav>
+        <div class="auth-buttons">
+            <a href="/login" class="btn-login">Войти</a>
+            <a href="/register" class="btn-register">Регистрация</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="auth-container">
+            <h2 class="auth-title">Вход в аккаунт</h2>
+            
+            <form>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" placeholder="your@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Пароль</label>
+                    <input type="password" class="form-input" placeholder="••••••••" required>
+                </div>
+                
+                <button type="submit" class="btn-submit">Войти</button>
+            </form>
+            
+            <div class="auth-links">
+                <p>Нет аккаунта? <a href="/register" class="auth-link">Зарегистрируйтесь</a></p>
+                <a href="/" class="back-link">← Вернуться на главную</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
+
+    
+
+
