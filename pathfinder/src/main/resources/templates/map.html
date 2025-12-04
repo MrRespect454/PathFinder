@@ -1,47 +1,77 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <buttonc lass = "btnback">Вернутся на главную страницу</button>
-
-        <div lass = "pagetitel">Карта PathFinder</div>
-
-        <div class="usermanu">
-            <button class="btnnotifications">Уведомления</button>
-            <button class="btnnotifications">Профиль</button>
-            <button class="btnnotifications">Настройки</button>  
-        </div>
-        
-        <section class="searchpanel">
-            <h3>Поиск тегов</h3>
-            <div class="radiuscontrol">
-                <input type="text" class="searchinput" placeholder="Введите имя тега">
-                <label>Радиус поиска:</label>
-                <input type="range" class="radiusslider" min="100" max="5000" value="1000" step="100">
-                <span class="radius-value">1000 м</span>
-            </div>
-
-            <div class="categoryfilters">
-                <label>Категории:</label>
-                <button class="filterbtn active" data-category="all">Все</button>
-                <button class="filterbtn" data-category="restaurant">Рестораны</button>
-                <button class="filterbtn" data-category="cafe">Кафе</button>
-                <button class="filterbtn" data-category="park">Парки</button>
-                <button class="filterbtn" data-category="museum">Музеи</button>
-                <button class="filterbtn" data-category="shop">Магазины</button>
-            </div>
-
-            <button class="btnsearchprimary">Искать теги</button>
-            <button class="btnsearchcurrent">Рядом со мной</button>
-            <button class="btnclearsearch">Очистить</button>
-
-        </section>
-
-        <section class="panelresult">
-            <h3>Результат поиска</h3
-                <span class="resultcount">Найдено тегов</span>
-                <button class="btnexp">Экспорт</button>
-                
-        </section>
-
+        <link rel="stylesheet" href="/css/common.css">
+        <link rel="stylesheet" href="/css/pages.css">
     </head>
+
+
+    <body>
+
+        <header>
+            <div class="logo"></div>
+            <nav>
+                <a href="/" class="navlink">Главная</a>
+                <a href="/map" class="navlinkactive">Карта</a>
+                <a href="/routes" class="navlink">Маршруты</a>
+                <a href="/profile" class="navlink">Профиль</a>
+            </nav>
+            <div class="auth-buttons">
+                <a href="/login" class="btn-login">Войти</a>
+                <a href="/register" class="btn-register">Регистрация</a>
+            </div>
+        </header>
+
+        <div class="container">
+            <button class="btnback">Вернуться на главную страницу</button>
+            <div class="pagetitel">Карта PathFinder</div>
+            
+            <div class="usermanu">
+                <buttonc lass = "btnback">Вернутся на главную страницу</button>
+
+                <div lass = "pagetitel">Карта PathFinder</div>
+                        
+                <div class="usermanu">
+                    <button class="btnnotifications">Уведомления</button>
+                    <button class="btnnotifications">Профиль</button>
+                    <button class="btnnotifications">Настройки</button>  
+                </div>
+                
+                <section class="searchpanel">
+                    <h3>Поиск тегов</h3>
+                    <div class="radiuscontrol">
+                        <input type="text" class="searchinput" placeholder="Введите имя тега">
+                        <label>Радиус поиска:</label>
+                        <input type="range" class="radiusslider" min="100" max="5000" value="1000" step="100">
+                        <span class="radius-value">1000 м</span>
+                    </div>
+                
+                    <div class="categoryfilters">
+                        <label>Категории:</label>
+                        <button class="filterbtn active" data-category="all">Все</button>
+                        <button class="filterbtn" data-category="restaurant">Рестораны</button>
+                        <button class="filterbtn" data-category="cafe">Кафе</button>
+                        <button class="filterbtn" data-category="park">Парки</button>
+                        <button class="filterbtn" data-category="museum">Музеи</button>
+                        <button class="filterbtn" data-category="shop">Магазины</button>
+                    </div>
+                
+                    <button class="btnsearchprimary">Искать теги</button>
+                    <button class="btnsearchcurrent">Рядом со мной</button>
+                    <button class="btnclearsearch">Очистить</button>
+                
+                </section>
+            
+                <section class="panelresult">
+                    <h3>Результат поиска</h3
+                        <span class="resultcount">Найдено тегов</span>
+                        <button class="btnexp">Экспорт</button>
+                        
+                </section>
+            </div>
+        </div>
+
+        
+
+    </body>
 </html>

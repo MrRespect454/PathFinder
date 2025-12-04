@@ -23,18 +23,30 @@ public class WebController {
         return "map";
     }
 
+    @GetMapping("/routes")
+    public String routes() {
+        log.info("Loading routes page");
+        return "routes";
+    }
+    
+    @GetMapping("/profile")
+    public String profile() {
+        log.info("Loading profile page");
+        return "profile";
+    }
+
+    @GetMapping("/login")
+    public String login()
+     {
+        log.info("Loading login page");
+        return "login"; 
+    }    
+    
     @GetMapping("/register")
     public String register() 
     {
         log.info("Loading register page");
         return "register"; 
     }
-    
-  @GetMapping("/login")
-    public String login()
-     {
-        log.info("Loading login page");
-        return "login"; 
-    } 
     
 }
