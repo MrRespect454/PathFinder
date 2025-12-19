@@ -52,7 +52,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     
     form.addEventListener('submit', async function(event) {
-        event.preventDefault();
+        event.preventDefault(); // ОТМЕНА СТАНДАРТНОЙ ОТПРАВКИ
+        
+        // Получаем данные формы
         const formData = {
             username: document.querySelector('input[type="email"]').value,
             password: document.querySelector('input[type="password"]').value
@@ -61,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Отправляю данные:', formData);
         
         try {
+            // Отправляем запрос на сервер
             const response = await fetch('/api/auth/login', {
                 method: 'POST',
                 headers: {
@@ -78,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Ответ сервера:', result);
             
             if (response.ok && result.token) {
+                // Сохраняем токен
                 localStorage.setItem('auth_token', result.token);
                 alert('Вход успешен!');
                 window.location.href = '/map';
