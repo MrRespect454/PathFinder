@@ -46,47 +46,52 @@
                 </div>
             </div>
         </main>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('form');
+    
+        <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const formData = {
+            username: document.querySelector('input[type="email"]').value,
+            password: document.querySelector('input[type="password"]').value
+        };
         
-        form.addEventListener('submit', async function(event) {
-            event.preventDefault(); 
+        console.log('Отправляю данные:', formData);
+        
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: formData.username,
+                    password: formData.password
+                })
+            });
             
-            const formData = {
-                username: document.querySelector('input[type="email"]').value,
-                password: document.querySelector('input[type="password"]').value
-            };
+            console.log('Статус ответа:', response.status);
             
-            try {
-                const response = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        username: formData.username,
-                        password: formData.password
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok && result.token) {
-                    localStorage.setItem('auth_token', result.token);
-                    localStorage.setItem('username', formData.username);
-                    
-                    window.location.href = '/map';
-                } else {
-                    alert(result.message || 'Ошибка входа');
-                }
-            } catch (error) {
-                alert('Ошибка соединения с сервером');
-                console.error('Error:', error);
+            const result = await response.json();
+            console.log('Ответ сервера:', result);
+            
+            if (response.ok && result.token) {
+                localStorage.setItem('auth_token', result.token);
+                alert('Вход успешен!');
+                window.location.href = '/map';
+            } else {
+                alert('Ошибка: ' + (result.message || 'Неверные данные'));
             }
-        });
+        } catch (error) {
+            console.error('Ошибка:', error);
+            alert('Ошибка соединения с сервером');
+        }
     });
+});
 </script>
+
     </body>
 </html>
 
