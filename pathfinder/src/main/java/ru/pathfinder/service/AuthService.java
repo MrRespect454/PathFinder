@@ -13,14 +13,18 @@ public class AuthService {
     private final UserService userService;
     private final JwtService jwtService;
 
-    public String authenticate(String username, String password) {
-        Optional<User> userOptional = userService.findByUsername(username);
+    public String authenticate(String usernameOrEmail, String password) {
+        // Сначала ищем по username
+        Optional<User> userOptional = userService.findByUsername(usernameOrEmail);
+        if (userOptional.isEmpty()) {//иначе Email
+            userOptional = userService.findByEmail(usernameOrEmail);
+        }
         
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (userService.validatePassword(password, user.getPassword())) {
                 // Generate and return JWT token
-                return jwtService.generateToken(username);
+                return jwtService.generateToken(user.getUsername());
             }
         }
         return null;

@@ -40,13 +40,63 @@
                 <button type="submit" class="btn-submit">Войти</button>
             </form>
             
-            <div class="auth-links">
-                <p>Нет аккаунта? <a href="/register" class="auth-link">Зарегистрируйтесь</a></p>
-                <a href="/" class="back-link">← Вернуться на главную</a>
+                <div class="auth-links">
+                    <p>Нет аккаунта? <a href="/register" class="auth-link">Зарегистрируйтесь</a></p>
+                    <a href="/" class="back-link">← Вернуться на главную</a>
+                </div>
             </div>
-        </div>
-    </main>
-</body>
+        </main>
+    
+        <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault(); // ОТМЕНА СТАНДАРТНОЙ ОТПРАВКИ
+        
+        // Получаем данные формы
+        const formData = {
+            username: document.querySelector('input[type="email"]').value,
+            password: document.querySelector('input[type="password"]').value
+        };
+        
+        console.log('Отправляю данные:', formData);
+        
+        try {
+            // Отправляем запрос на сервер
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: formData.username,
+                    password: formData.password
+                })
+            });
+            
+            console.log('Статус ответа:', response.status);
+            
+            const result = await response.json();
+            console.log('Ответ сервера:', result);
+            
+            if (response.ok && result.token) {
+                // Сохраняем токен
+                localStorage.setItem('auth_token', result.token);
+                alert('Вход успешен!');
+                window.location.href = '/map';
+            } else {
+                alert('Ошибка: ' + (result.message || 'Неверные данные'));
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+            alert('Ошибка соединения с сервером');
+        }
+    });
+});
+</script>
+
+    </body>
 </html>
 
 

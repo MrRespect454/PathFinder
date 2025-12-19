@@ -37,7 +37,8 @@ dependencies {
     
     // Database
     runtimeOnly 'org.postgresql:postgresql'
-    implementation 'org.hibernate.orm:hibernate-spatial'
+    implementation 'org.hibernate.orm:hibernate-spatial:6.4.4.Final'
+    implementation 'org.locationtech.jts:jts-core:1.19.0'
     
     // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
