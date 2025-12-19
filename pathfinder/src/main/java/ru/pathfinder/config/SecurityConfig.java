@@ -23,7 +23,9 @@ public class SecurityConfig {
                     "/login", "/login.html", 
                     "/map", "/map.html",
                     "/css/**", "/js/**", "/images/**",
-                    "/api/public/**"
+                    "/api/public/**",
+                    "/api/auth/**",      // ← РЕГИСТРАЦИЯ И ЛОГИН
+                    "/api/simple/**"     // ← API ДЛЯ КАРТЫ
                 ).permitAll()
                 
                 // Только для авторизованных
@@ -35,11 +37,14 @@ public class SecurityConfig {
                 
                 .anyRequest().permitAll()  // или .authenticated() - по вашему выбору
             )
+            .csrf(csrf -> csrf
+                .ignoringRequestMatchers("/api/**")  // ← ОТКЛЮЧАЕМ CSRF ДЛЯ API
+            )
             .formLogin(form -> form
-                .loginPage("/login")  // ваша кастомная страница логина
-                .loginProcessingUrl("/perform_login")  // URL для обработки формы
-                .defaultSuccessUrl("/map", true)  // куда идти после успешного входа
-                .failureUrl("/login?error=true")  // куда идти при ошибке
+                .loginPage("/login")
+                .loginProcessingUrl("/perform_login")
+                .defaultSuccessUrl("/map", true)
+                .failureUrl("/login?error=true")
                 .permitAll()
             )
             .logout(logout -> logout
