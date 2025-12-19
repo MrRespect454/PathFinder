@@ -185,3 +185,87 @@
 .leaflet-bottom .leaflet-control {
     pointer-events: all;
 }
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ ГЕОЛОКАЦИИ ===== */
+
+/* Анимация пульсации */
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.7;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+    }
+}
+
+/* Стили для сообщений */
+.result-item.message {
+    background: #ebf8ff;
+    border-color: #90cdf4;
+}
+
+.result-item.error {
+    background: #fff5f5;
+    border-color: #fc8181;
+}
+
+.result-item.error h4 {
+    color: #c53030;
+}
+
+.result-item.info {
+    background: #f0fff4;
+    border-color: #9ae6b4;
+}
+
+/* Стили для кнопок управления */
+.leaflet-control-location {
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+}
+
+.leaflet-control-location a {
+    display: block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    text-decoration: none;
+    color: #2d3748;
+    font-size: 18px;
+}
+
+.leaflet-control-location a:hover {
+    background: #f7fafc;
+}
+
+/* Стили для маркера местоположения */
+.user-location-marker {
+    background: transparent;
+    border: none;
+}
+
+/* Стили для круга поиска */
+.leaflet-overlay-pane .leaflet-interactive {
+    transition: radius 0.3s ease;
+}
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+    .map-controls {
+        flex-direction: column;
+    }
+    
+    .map-control-btn {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    
+    .result-item .show-on-map {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
