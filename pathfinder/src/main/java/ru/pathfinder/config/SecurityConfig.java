@@ -15,10 +15,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 // Разрешить ВСЕМ (включая неавторизованных)
                 .requestMatchers(
-                    "/", "/index", "/index.html",
+                    "/api/poi/**",  
+                    "/api/auth/**","/", "/index", "/index.html",
                     "/register", "/register.html",
                     "/login", "/login.html", 
                     "/map", "/map.html",

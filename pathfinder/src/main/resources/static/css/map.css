@@ -1,0 +1,271 @@
+/* ===== CSS/map.css ===== */
+
+/* Контейнер для карты */
+.map-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 20px;
+}
+
+.map-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    min-height: 600px;
+}
+
+@media (max-width: 992px) {
+    .map-wrapper {
+        flex-direction: column;
+    }
+}
+
+/* Панель управления */
+.control-panel {
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+}
+
+/* Основная карта */
+.main-map {
+    flex: 2;
+    min-height: 600px;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Стили для результатов поиска */
+.search-results {
+    margin-top: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-results::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 3px;
+}
+
+.result-item {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.result-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: #667eea;
+}
+
+.result-item h4 {
+    color: #2d3748;
+    margin-bottom: 5px;
+    font-size: 1rem;
+}
+
+.result-item p {
+    color: #718096;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.result-item .show-on-map {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.result-item .show-on-map:hover {
+    background: #764ba2;
+}
+
+/* Стили для маркеров на карте */
+.leaflet-popup-content {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.leaflet-popup-content h3 {
+    color: #2d3748;
+    margin-bottom: 5px;
+}
+
+.leaflet-popup-content p {
+    color: #718096;
+    margin-bottom: 10px;
+}
+
+/* Кнопки управления картой */
+.map-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.map-control-btn {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* Индикатор загрузки */
+.loading {
+    display: none;
+    text-align: center;
+    padding: 10px;
+    color: #667eea;
+    font-weight: 500;
+}
+
+.loading.active {
+    display: block;
+}
+
+/* Стили для иконок категорий */
+.category-icon {
+    font-size: 1.2em;
+    margin-right: 5px;
+}
+
+/* Стили для карты в целом */
+.leaflet-container {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Стили для демо-результатов */
+.no-results {
+    background: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    padding: 20px;
+    color: #718096;
+}
+
+/* Фиксация для правильного отображения карты */
+.leaflet-control-container {
+    z-index: 1000;
+}
+
+/* Позиционирование элементов управления */
+.leaflet-top,
+.leaflet-bottom {
+    position: absolute;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.leaflet-top .leaflet-control,
+.leaflet-bottom .leaflet-control {
+    pointer-events: all;
+}
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ ГЕОЛОКАЦИИ ===== */
+
+/* Анимация пульсации */
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.7;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+    }
+}
+
+/* Стили для сообщений */
+.result-item.message {
+    background: #ebf8ff;
+    border-color: #90cdf4;
+}
+
+.result-item.error {
+    background: #fff5f5;
+    border-color: #fc8181;
+}
+
+.result-item.error h4 {
+    color: #c53030;
+}
+
+.result-item.info {
+    background: #f0fff4;
+    border-color: #9ae6b4;
+}
+
+/* Стили для кнопок управления */
+.leaflet-control-location {
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+}
+
+.leaflet-control-location a {
+    display: block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    text-decoration: none;
+    color: #2d3748;
+    font-size: 18px;
+}
+
+.leaflet-control-location a:hover {
+    background: #f7fafc;
+}
+
+/* Стили для маркера местоположения */
+.user-location-marker {
+    background: transparent;
+    border: none;
+}
+
+/* Стили для круга поиска */
+.leaflet-overlay-pane .leaflet-interactive {
+    transition: radius 0.3s ease;
+}
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+    .map-controls {
+        flex-direction: column;
+    }
+    
+    .map-control-btn {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    
+    .result-item .show-on-map {
+        padding: 10px;
+        font-size: 14px;
+    }
+}

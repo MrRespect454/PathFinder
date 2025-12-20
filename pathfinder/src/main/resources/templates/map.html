@@ -1,77 +1,140 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="/css/common.css">
-        <link rel="stylesheet" href="/css/pages.css">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карта PathFinder</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    
+    <!-- Ваши стили -->
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/pages.css">
+    <link rel="stylesheet" href="/css/map.css">
+    
+    <style>
+        /* Временные стили для гарантии отображения карты */
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #map {
+            min-height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
 
+<body>
+    <header>
+        <div class="logo"></div>
+        <nav>
+            <a href="/" class="navlink">Главная</a>
+            <a href="/map" class="navlinkactive">Карта</a>
+            <a href="/routes" class="navlink">Маршруты</a>
+            <a href="/profile" class="navlink">Профиль</a>
+        </nav>
+        <div class="auth-buttons">
+            <a href="/login" class="btn-login">Войти</a>
+            <a href="/register" class="btn-register">Регистрация</a>
+        </div>
+    </header>
 
-    <body>
+    <div class="container">
+        <!-- Кнопка назад и заголовок -->
+        <button class="btnback" onclick="window.location.href='/'">← Вернуться на главную</button>
+        <div class="pagetitel">Карта PathFinder</div>
 
-        <header>
-            <div class="logo"></div>
-            <nav>
-                <a href="/" class="navlink">Главная</a>
-                <a href="/map" class="navlinkactive">Карта</a>
-                <a href="/routes" class="navlink">Маршруты</a>
-                <a href="/profile" class="navlink">Профиль</a>
-            </nav>
-            <div class="auth-buttons">
-                <a href="/login" class="btn-login">Войти</a>
-                <a href="/register" class="btn-register">Регистрация</a>
-            </div>
-        </header>
-
-        <div class="container">
-            <button class="btnback">Вернуться на главную страницу</button>
-            <div class="pagetitel">Карта PathFinder</div>
-            
-            <div class="usermanu">
-                <buttonc lass = "btnback">Вернутся на главную страницу</button>
-
-                <div lass = "pagetitel">Карта PathFinder</div>
-                        
-                <div class="usermanu">
-                    <button class="btnnotifications">Уведомления</button>
-                    <button class="btnnotifications">Профиль</button>
-                    <button class="btnnotifications">Настройки</button>  
-                </div>
-                
-                <section class="searchpanel">
-                    <h3>Поиск тегов</h3>
-                    <div class="radiuscontrol">
-                        <input type="text" class="searchinput" placeholder="Введите имя тега">
-                        <label>Радиус поиска:</label>
-                        <input type="range" class="radiusslider" min="100" max="5000" value="1000" step="100">
-                        <span class="radius-value">1000 м</span>
-                    </div>
-                
-                    <div class="categoryfilters">
-                        <label>Категории:</label>
-                        <button class="filterbtn active" data-category="all">Все</button>
-                        <button class="filterbtn" data-category="restaurant">Рестораны</button>
-                        <button class="filterbtn" data-category="cafe">Кафе</button>
-                        <button class="filterbtn" data-category="park">Парки</button>
-                        <button class="filterbtn" data-category="museum">Музеи</button>
-                        <button class="filterbtn" data-category="shop">Магазины</button>
-                    </div>
-                
-                    <button class="btnsearchprimary">Искать теги</button>
-                    <button class="btnsearchcurrent">Рядом со мной</button>
-                    <button class="btnclearsearch">Очистить</button>
-                
-                </section>
-            
-                <section class="panelresult">
-                    <h3>Результат поиска</h3>
-                        <span class="resultcount">Найдено тегов</span>
-                        <button class="btnexp">Экспорт</button>
-                        
-                </section>
-            </div>
+        <!-- Панель пользователя -->
+        <div class="usermanu">
+            <button class="btnnotifications" onclick="mapApp.showNotifications()">🔔 Уведомления</button>
+            <button class="btnnotifications" onclick="window.location.href='/profile'">👤 Профиль</button>
+            <button class="btnnotifications" onclick="mapApp.showSettings()">⚙️ Настройки</button>
         </div>
 
-        
+        <div class="map-container">
+            <div class="map-wrapper">
+                <!-- Левая панель с управлением -->
+                <div class="control-panel">
+                    <section class="searchpanel">
+                        <h3>🔍 Поиск точек интереса</h3>
+                        
+                        <div class="form-group">
+                            <input type="text" 
+                                   id="search-input" 
+                                   class="searchinput" 
+                                   placeholder="Введите название места, адрес или тег">
+                        </div>
+                        
+                        <div class="radiuscontrol">
+                            <label>📏 Радиус поиска: <span id="radius-value">1000 м</span></label>
+                            <input type="range" 
+                                   id="radius-slider" 
+                                   class="radiusslider" 
+                                   min="100" 
+                                   max="1000" 
+                                   value="1000" 
+                                   step="100">
+                        </div>
+                        
+                        <div class="categoryfilters">
+                            <label>🏷️ Категории:</label>
+                            <div class="filter-buttons">
+                                <button class="filterbtn active" data-category="all">Все</button>
+                                <button class="filterbtn" data-category="restaurant">🍽️ Рестораны</button>
+                                <button class="filterbtn" data-category="cafe">☕ Кафе</button>
+                                <button class="filterbtn" data-category="park">🌳 Парки</button>
+                                <button class="filterbtn" data-category="museum">🏛️ Музеи</button>
+                                <button class="filterbtn" data-category="shop">🛒 Магазины</button>
+                            </div>
+                        </div>
+                        
+                        <div class="map-controls">
+                            <button id="search-btn" class="btnsearchprimary map-control-btn">🔎 Искать</button>
+                            <button id="current-location-btn" class="btnsearchcurrent map-control-btn">📍 Мое местоположение</button>
+                            <button id="clear-btn" class="btnclearsearch map-control-btn">🗑️ Очистить</button>
+                        </div>
+                    </section>
+                    
+                    <!-- Результаты поиска -->
+                    <section class="panelresult">
+                        <div class="panel-header">
+                            <h3>📋 Результаты</h3>
+                            <div class="panel-stats">
+                                <span id="result-count" class="resultcount">0</span>
+                                <button id="export-btn" class="btnexp" title="Экспортировать результаты">📤</button>
+                            </div>
+                        </div>
+                        
+                        <div class="loading" id="loading">Загрузка...</div>
+                        
+                        <div id="search-results" class="search-results">
+                            <div class="result-item no-results">
+                                <p>Введите запрос для поиска или используйте кнопку "Мое местоположение"</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                
+                <!-- Правая часть с картой -->
+                <div class="main-map">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    </body>
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    
+    <!-- Ваш JavaScript для карты -->
+    <script src="/js/map.js"></script>
+</body>
 </html>
