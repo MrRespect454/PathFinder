@@ -37,7 +37,8 @@ dependencies {
     
     // Database
     runtimeOnly 'org.postgresql:postgresql'
-    implementation 'org.hibernate.orm:hibernate-spatial'
+    implementation 'org.hibernate.orm:hibernate-spatial:6.4.4.Final'
+    implementation 'org.locationtech.jts:jts-core:1.19.0'
     
     implementation 'org.n52.jackson:jackson-datatype-jts:1.2.10'
 
