@@ -719,14 +719,20 @@ const mapApp = {
         });
     },
     createPopupContent: function(poi) {
-        const categoryIcon = this.getCategoryIcon(poi.category);
+        const categoryName = poi.category ? poi.category.name : poi.category || 'unknown';
+        const categoryIcon = this.getCategoryIcon(categoryName);
+        const rating = poi.averageRating || poi.rating || 4.5;
+        
         return `
             <div style="min-width: 200px; max-width: 300px;">
                 <h3 style="margin: 0 0 8px 0; color: #2d3748;">${poi.name}</h3>
-                <p style="margin: 0 0 12px 0; color: #718096; font-size: 14px;">${poi.description}</p>
+                <p style="margin: 0 0 12px 0; color: #718096; font-size: 14px;">${poi.description || ''}</p>
+                <div style="margin: 0 0 8px 0; color: #4a5568; font-size: 13px;">
+                    ${poi.address ? `<p style="margin: 0 0 5px 0;">📍 ${poi.address}</p>` : ''}
+                </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid #e2e8f0;">
-                    <span style="color: #667eea; font-weight: 500;">${categoryIcon} ${poi.category}</span>
-                    <span style="color: #d69e2e; font-weight: 600;">⭐ ${poi.rating || 4.5}</span>
+                    <span style="color: #667eea; font-weight: 500;">${categoryIcon} ${categoryName}</span>
+                    <span style="color: #d69e2e; font-weight: 600;">⭐ ${rating.toFixed(1)}</span>
                 </div>
             </div>
         `;
@@ -744,12 +750,18 @@ const mapApp = {
     centerMapOnPOI: function(lat, lng) {
         if (!this.map) return;
         
-        this.map.setView([lat, lng], 16);
+        this.map.setView([lat, lng], 16, {
+            animate: true,
+            duration: 1
+        });
         
         this.markers.eachLayer((layer) => {
             if (layer instanceof L.Marker && layer.poiData) {
-                if (Math.abs(layer.poiData.lat - lat) < 0.0001 && 
-                    Math.abs(layer.poiData.lng - lng) < 0.0001) {
+                const poiLat = layer.poiData.latitude || layer.poiData.lat;
+                const poiLng = layer.poiData.longitude || layer.poiData.lng;
+                
+                if (Math.abs(poiLat - lat) < 0.0001 && 
+                    Math.abs(poiLng - lng) < 0.0001) {
                     layer.openPopup();
                 }
             }
@@ -781,37 +793,146 @@ const mapApp = {
             this.performSearchAroundLocation(this.userLocation.lat, this.userLocation.lng);
         }
     },
-    searchByText: function(query) {
-        // Демо данные
-        const demoPOIs = [
-            { id: 1, name: 'Новосибирский театр оперы и балета', lat: 54.9961, lng: 82.8963, category: 'museum', 
-              description: 'Крупнейший театр России', rating: 4.8 },
-            { id: 2, name: 'Парк «Берёзовая роща»', lat: 54.9876, lng: 82.9123, category: 'park', 
-              description: 'Живописный парк в центре города', rating: 4.5 }
-        ];
+    searchByText: async function(query) {
+        this.showLoading(true);
         
-        const filtered = demoPOIs.filter(poi => 
-            poi.name.toLowerCase().includes(query.toLowerCase()) ||
-            (poi.description && poi.description.toLowerCase().includes(query.toLowerCase()))
-        );
-        
-        setTimeout(() => {
+        try {
+            if (this.userLocation) {
+                // Поиск по названию в радиусе
+                const response = await this.searchPOIByNameInRadius(
+                    this.userLocation.lat,
+                    this.userLocation.lng,
+                    parseInt(this.elements.radiusSlider?.value || 1000),
+                    query
+                );
+                
+                this.displaySearchResults(response);
+                this.addMarkersToMap(response);
+            } else {
+                // Или использовать все POI и фильтровать локально
+                const response = await this.getAllPOI();
+                const filtered = response.filter(poi => 
+                    poi.name.toLowerCase().includes(query.toLowerCase()) ||
+                    (poi.description && poi.description.toLowerCase().includes(query.toLowerCase()))
+                );
+                
+                this.displaySearchResults(filtered);
+                this.addMarkersToMap(filtered);
+            }
+        } catch (error) {
+            console.error('Ошибка поиска:', error);
+            this.showError('Ошибка при поиске: ' + error.message);
+            
+            // Fallback на демо данные
+            const demoPOIs = [
+                { id: 1, name: 'Новосибирский театр оперы и балета', lat: 54.9961, lng: 82.8963, category: 'museum', 
+                  description: 'Крупнейший театр России', rating: 4.8 },
+                { id: 2, name: 'Парк «Берёзовая роща»', lat: 54.9876, lng: 82.9123, category: 'park', 
+                  description: 'Живописный парк в центре города', rating: 4.5 }
+            ];
+            
+            const filtered = demoPOIs.filter(poi => 
+                poi.name.toLowerCase().includes(query.toLowerCase())
+            );
+            
             this.displaySearchResults(filtered);
             this.addMarkersToMap(filtered);
+        } finally {
             this.showLoading(false);
-        }, 300);
+        }
     },
-    performSearchAroundLocation: function(lat, lng) {
-        const radius = parseInt(this.elements.radiusSlider?.value || 1000);
-        const demoPOIs = this.generateDemoPOIsAround(lat, lng, radius);
+    performSearchAroundLocation: async function(lat, lng) {
+        this.showLoading(true);
         
-        setTimeout(() => {
+        try {
+            const radius = parseInt(this.elements.radiusSlider?.value || 1000);
+            const response = await this.searchPOIByRadius(lat, lng, radius);
+            
+            this.displaySearchResults(response);
+            this.addMarkersToMap(response);
+        } catch (error) {
+            console.error('Ошибка поиска по радиусу:', error);
+            this.showError('Ошибка при поиске по радиусу: ' + error.message);
+            
+            // Fallback на демо данные
+            const demoPOIs = this.generateDemoPOIsAround(lat, lng, radius);
             this.displaySearchResults(demoPOIs);
             this.addMarkersToMap(demoPOIs);
+        } finally {
             this.showLoading(false);
-        }, 300);
+        }
     },
+
+     searchPOIByRadius: async function(lat, lon, radius, categoryId = null) {
+        const payload = {
+            lat: lat,
+            lon: lon,
+            radius: radius
+        };
+        
+        if (categoryId) {
+            payload.categoryId = categoryId;
+        }
+        
+        const response = await fetch('/api/poi/search/radius', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return await response.json();
+    },
+
+    searchPOIByNameInRadius: async function(lat, lon, radius, query) {
+        const payload = {
+            lat: lat,
+            lon: lon,
+            radius: radius
+        };
+        
+        const response = await fetch(`/api/poi/search/name?query=${encodeURIComponent(query)}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return await response.json();
+    },
+
+    getAllPOI: async function() {
+        const response = await fetch('/api/poi/all');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return await response.json();
+    },
+
+    getPOIByCategory: async function(categoryId) {
+        const response = await fetch(`/api/poi/category/${categoryId}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return await response.json();
+    },
+
     generateDemoPOIsAround: function(lat, lng, radius) {
+        // Эта функция теперь используется только как fallback
         const radiusInDegrees = radius / 111320;
         
         return [
@@ -820,18 +941,9 @@ const mapApp = {
                 name: 'Ближайший ресторан', 
                 lat: lat + (radiusInDegrees * 0.3), 
                 lng: lng + (radiusInDegrees * 0.3), 
-                category: 'restaurant', 
+                category: { name: 'restaurant' }, 
                 description: 'Ресторан поблизости', 
-                rating: 4.2 
-            },
-            { 
-                id: 12, 
-                name: 'Кафе рядом', 
-                lat: lat - (radiusInDegrees * 0.2), 
-                lng: lng, 
-                category: 'cafe', 
-                description: 'Уютное кафе', 
-                rating: 4.3 
+                averageRating: 4.2 
             }
         ];
     },
@@ -860,19 +972,25 @@ const mapApp = {
         
         let html = '';
         filteredResults.forEach(poi => {
-            const categoryIcon = this.getCategoryIcon(poi.category);
+            const categoryName = poi.category ? poi.category.name : poi.category || 'unknown';
+            const categoryIcon = this.getCategoryIcon(categoryName);
+            const rating = poi.averageRating || poi.rating || 4.5;
+            const lat = poi.latitude || poi.lat;
+            const lng = poi.longitude || poi.lng;
+            
             html += `
                 <div class="result-item" data-id="${poi.id}">
                     <h4>${poi.name}</h4>
-                    <p>${poi.description}</p>
+                    <p>${poi.description || ''}</p>
+                    ${poi.address ? `<p class="address">📍 ${poi.address}</p>` : ''}
                     <div class="result-meta">
                         <span class="category-badge">
                             <span class="category-icon">${categoryIcon}</span>
-                            ${poi.category}
+                            ${categoryName}
                         </span>
-                        <span class="rating">⭐ ${poi.rating || 4.5}</span>
+                        <span class="rating">⭐ ${rating.toFixed(1)}</span>
                     </div>
-                    <button class="show-on-map" onclick="mapApp.centerMapOnPOI(${poi.lat}, ${poi.lng}); mapApp.highlightMarker(${JSON.stringify(poi).replace(/"/g, '&quot;')})">
+                    <button class="show-on-map" onclick="mapApp.centerMapOnPOI(${lat}, ${lng}); mapApp.highlightMarker(${JSON.stringify(poi).replace(/"/g, '&quot;')})">
                         Показать на карте
                     </button>
                 </div>
